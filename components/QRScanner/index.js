@@ -4,7 +4,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, StyleSheet} from 'react-native';
 import {TicketContext} from '../../core';
-import {filterTicketInfo} from '../../utils';
+import {filterTicketInfo} from '../utils';
 import FilterButtonGroup from '../FilterButtonGroup';
 
 const QRScan = ({navigation}) => {
@@ -17,7 +17,7 @@ const QRScan = ({navigation}) => {
       ticket && (await AsyncStorage.setItem(`${createdAt}`, ticket));
       navigation.push('Main');
     } catch (e) {
-      /** TODO - show error in QRCodeScanner */
+      console.warn('Неправильный QR код');
       console.error(e);
     }
   };
@@ -25,7 +25,7 @@ const QRScan = ({navigation}) => {
   return (
     <View style={styles.qrscan}>
       <QRCodeScanner
-        topContent={<FilterButtonGroup style={styles.paddingTop} />}
+        topContent={<FilterButtonGroup />}
         onRead={(e) => onSuccess(e)}
       />
     </View>
@@ -37,9 +37,5 @@ export default QRScan;
 const styles = StyleSheet.create({
   qrscan: {
     flex: 1,
-  },
-  paddingTop: {
-    flex: 1,
-    paddingTop: 20,
   },
 });

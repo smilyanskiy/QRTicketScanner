@@ -4,7 +4,7 @@ import {ListItem} from 'react-native-elements';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {formatDate} from '../../utils';
+import {formatDate} from '../utils';
 import {TicketContext, setTickets} from '../../core';
 
 const TicketList = ({navigation}) => {
@@ -12,6 +12,7 @@ const TicketList = ({navigation}) => {
   const {tickets, activeSide} = state;
   const list = tickets
     .sort((a, b) => b.createdAt - a.createdAt)
+    .sort((a, b) => b.isExpired - a.isExpired)
     .filter(({side}) => activeSide === side);
 
   const deleteTicket = async (id) => {
@@ -32,22 +33,34 @@ const TicketList = ({navigation}) => {
           onPress={() =>
             navigation.push('Details', {
               way: item.side,
+              expired: item.isExpired,
+              key: item.createdAt,
               index,
             })
           }>
           <ListItem.Content>
-            <ListItem.Subtitle style={styles.createdAt}>
-              {`создано: ${formatDate(item.createdAt)}`}
+            <View style={styles.infoBlock}>
+              <ListItem.Subtitle style={styles.createdAt}>
+                {`создано: ${formatDate(item.createdAt)}`}
+              </ListItem.Subtitle>
+            </View>
+            <ListItem.Title
+              style={[styles.name, item.isExpired && styles.disabledColor]}>
+              {item.name}
+            </ListItem.Title>
+            <ListItem.Subtitle
+              style={[
+                styles.subtitleFont,
+                item.isExpired && styles.disabled,
+              ]}>{`${item.way_from} - ${item.way_to}`}</ListItem.Subtitle>
+            <ListItem.Subtitle
+              style={[
+                styles.subtitleFont,
+                item.isExpired && styles.disabled,
+              ]}>{`${item.departure_time} - ${item.arrival_time}`}</ListItem.Subtitle>
+            <ListItem.Subtitle style={styles.notActual}>
+              билет использован
             </ListItem.Subtitle>
-            <ListItem.Title style={styles.name}>{item.name}</ListItem.Title>
-            <ListItem.Subtitle
-              style={
-                styles.subtitleFont
-              }>{`${item.way_from} - ${item.way_to}`}</ListItem.Subtitle>
-            <ListItem.Subtitle
-              style={
-                styles.subtitleFont
-              }>{`${item.departure_time} - ${item.arrival_time}`}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron size={20} activeOpacity={0.7} color="black" />
         </ListItem>
@@ -96,6 +109,20 @@ const styles = StyleSheet.create({
   delete: {
     color: '#ffffff',
     fontWeight: 'bold',
+  },
+  disabled: {
+    color: '#D3D3D3',
+    // textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
+  disabledColor: {
+    color: '#808080',
+  },
+  notActual: {
+    width: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#9f0000',
   },
 });
 export default TicketList;
