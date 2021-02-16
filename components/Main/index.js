@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import FixedButton from '../FixedButton';
 import TicketList from '../TicketList';
 import {TicketContext, setTickets} from '../../core';

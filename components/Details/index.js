@@ -4,9 +4,8 @@ import Swiper from 'react-native-swiper';
 import {View, StyleSheet, Text} from 'react-native';
 import {Card} from 'react-native-elements';
 import {TicketContext} from '../../core';
-// import {combineFromTo} from '../../utils';
 const Details = ({route}) => {
-  const {way, index} = route?.params;
+  const {way, index, expired, key} = route?.params;
   const {state} = TicketContext();
   const {tickets} = state;
 
@@ -14,6 +13,7 @@ const Details = ({route}) => {
     <Swiper index={index} loop={false} key={tickets.length}>
       {tickets
         .filter(({side}) => side === way)
+        .filter((item) => (expired ? item.createdAt === key : item))
         .map((ticket) => (
           <Card
             key={`${ticket.name}_${ticket.createdAt}`}

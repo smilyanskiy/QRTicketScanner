@@ -14,10 +14,11 @@ export const filterTicketInfo = (ticket, createdAt, activeSide) => {
       qr_code_str: ticket,
       createdAt,
       side: activeSide,
+      isExpired: checkIsExpired(arr[3]),
     };
     return JSON.stringify(mainInfo);
   } catch (e) {
-    console.warn('wrong data');
+    console.warn('Неправильный QR код');
     return false;
   }
 };
@@ -25,16 +26,27 @@ export const filterTicketInfo = (ticket, createdAt, activeSide) => {
 const splitStr = (str, by, elem) => str.split(by)[elem];
 
 export const formatDate = (unix) => {
-  const date = new Date(unix).toLocaleDateString();
+  const date = new Date(unix).toLocaleDateString('en-GB');
   const time = new Date(unix).toLocaleTimeString();
   return `${date} ${time}`;
 };
 
-// export const combineFromTo = (ticket, data) => {
-//   const {from, to, client} = data;
-//   const {name, way_from, way_to} = ticket;
-//   const wayTo = from === way_from || from === way_to;
-//   const wayFrom = to === way_to || to === way_from;
-//   const FSnames = client === name;
-//   return wayTo && wayFrom && FSnames;
-// };
+const checkIsExpired = (date) => {
+  const t1 = 1000;
+  try {
+    const dateAndTime = date.split(' ');
+    const dayAndMonth = dateAndTime[0].split('.');
+    const HourAndMinutes = dateAndTime[1].split(':');
+    const today = new Date();
+    const ticketUnix = new Date(
+      `${today.getFullYear()}`,
+      `${parseInt(dayAndMonth[1], 10) - 1}`,
+      dayAndMonth[0],
+      HourAndMinutes[0],
+      HourAndMinutes[1],
+    );
+    return today.getTime() / t1 > ticketUnix.getTime() / t1;
+  } catch (e) {
+    return false;
+  }
+};

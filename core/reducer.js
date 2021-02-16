@@ -6,7 +6,7 @@ export const initialState = {
 };
 
 export const ticketsReducer = (state, action) => {
-  // ('GET_TICKETS', state, action);
+  // console.log('GET_TICKETS', state, action);
   switch (action.type) {
     case GET_TICKETS:
       return {
