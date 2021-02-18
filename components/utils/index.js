@@ -14,7 +14,7 @@ export const filterTicketInfo = (ticket, createdAt, activeSide) => {
       qr_code_str: ticket,
       createdAt,
       side: activeSide,
-      isExpired: checkIsExpired(arr[3]),
+      isExpired: false,
     };
     return JSON.stringify(mainInfo);
   } catch (e) {
@@ -31,22 +31,39 @@ export const formatDate = (unix) => {
   return `${date} ${time}`;
 };
 
-const checkIsExpired = (date) => {
+//TODO changed not work
+export const checkIsExpired = (date) => {
   const t1 = 1000;
   try {
     const dateAndTime = date.split(' ');
     const dayAndMonth = dateAndTime[0].split('.');
     const HourAndMinutes = dateAndTime[1].split(':');
+    const month = parseInt(dayAndMonth[1], 10);
     const today = new Date();
-    const ticketUnix = new Date(
-      `${today.getFullYear()}`,
-      `${parseInt(dayAndMonth[1], 10) - 1}`,
+    const ticket = new Date(
+      `${yearDeduction(month)}`,
+      `${month - 1}`,
       dayAndMonth[0],
       HourAndMinutes[0],
       HourAndMinutes[1],
     );
-    return today.getTime() / t1 > ticketUnix.getTime() / t1;
+    return today.getTime() / t1 > ticket.getTime() / t1;
   } catch (e) {
     return false;
   }
+};
+
+const yearDeduction = (month) => {
+  const purchasePeriod = 45;
+  const today = new Date();
+  const rangeDate = new Date();
+  const newChangedDate = new Date(
+    rangeDate.setDate(rangeDate.getDate() + purchasePeriod),
+  );
+  if (today.getFullYear() !== newChangedDate.getFullYear()) {
+    if (month === 0 || month === 1) {
+      return newChangedDate.getFullYear();
+    }
+  }
+  return today.getFullYear();
 };

@@ -4,6 +4,7 @@ import Swiper from 'react-native-swiper';
 import {View, StyleSheet, Text} from 'react-native';
 import {Card} from 'react-native-elements';
 import {TicketContext} from '../../core';
+import {formatDate} from '../utils';
 const Details = ({route}) => {
   const {way, index, expired, key} = route?.params;
   const {state} = TicketContext();
@@ -32,6 +33,9 @@ const Details = ({route}) => {
               <Text style={styles.text}>{`Поезд: ${ticket.train_info}`}</Text>
               <Text style={styles.text}>{`Вагон: ${ticket.train_car}`}</Text>
               <Text style={styles.text}>{`Место: ${ticket.seat}`}</Text>
+              <Text style={styles.text}>{`Билет создано в: ${formatDate(
+                ticket.createdAt,
+              )}`}</Text>
               <Text style={styles.text}>{`Цена: ${ticket.price} грн.`}</Text>
             </View>
             <Card.Divider />
