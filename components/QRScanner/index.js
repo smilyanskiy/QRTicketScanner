@@ -18,14 +18,13 @@ const QRScan = ({navigation}) => {
       navigation.push('Main');
     } catch (e) {
       console.warn('Неправильный QR код');
-      console.error(e);
     }
   };
 
   return (
-    <View style={styles.qrscan}>
+    <View style={styles.flexalble}>
       <QRCodeScanner
-        topContent={<FilterButtonGroup />}
+        topContent={<FilterButtonGroup style={styles.flexalble} />}
         onRead={(e) => onSuccess(e)}
       />
     </View>
@@ -35,7 +34,7 @@ const QRScan = ({navigation}) => {
 export default QRScan;
 
 const styles = StyleSheet.create({
-  qrscan: {
+  flexalble: {
     flex: 1,
   },
 });
