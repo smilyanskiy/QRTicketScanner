@@ -13,9 +13,14 @@ const QRScan = ({navigation}) => {
   const onSuccess = async (e) => {
     try {
       const createdAt = new Date().getTime();
-      const ticket = filterTicketInfo(e.data, createdAt, activeSide);
+      const ticket = filterTicketInfo({
+        ticket: e.data,
+        createdAt,
+        activeSide,
+      });
       ticket && (await AsyncStorage.setItem(`${createdAt}`, ticket));
-      navigation.push('Main');
+      // navigation.push('Main');
+      navigation.reset({routes: [{name: 'Main'}]});
     } catch (e) {
       console.warn('Неправильный QR код');
     }
