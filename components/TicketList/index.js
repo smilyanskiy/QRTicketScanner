@@ -17,7 +17,8 @@ const TicketList = ({navigation, refreshing, setRefreshing}) => {
   const {state, dispatch} = TicketContext();
   const {tickets, activeSide} = state;
   const list = tickets
-    .sort((a, b) => b.createdAt - a.createdAt && b.isExpired - a.isExpired)
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .sort((a, b) => b.isExpired - a.isExpired)
     .filter(({side}) => activeSide === side);
 
   const deleteTicket = async (id) => {

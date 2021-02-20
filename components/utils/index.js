@@ -1,4 +1,4 @@
-export const filterTicketInfo = (ticket, createdAt, activeSide) => {
+export const filterTicketInfo = ({ticket, createdAt, activeSide}) => {
   try {
     const arr = ticket.split(/[\r\n]+/).filter((item) => /\S/.test(item));
     const mainInfo = {

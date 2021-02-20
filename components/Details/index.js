@@ -1,5 +1,5 @@
 import React from 'react';
-import QRCode from 'react-native-qrcode-generator';
+import QRCode from 'react-native-qrcode-svg';
 import Swiper from 'react-native-swiper';
 import {View, StyleSheet, Text} from 'react-native';
 import {Card} from 'react-native-elements';

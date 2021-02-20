@@ -12,7 +12,7 @@ const App = () => {
   return (
     <TicketsProvider>
       <NavigationContainer>
-        <Stack.Navigator backBehavior="initialRoute">
+        <Stack.Navigator headerMode="none">
           {NAVIGATIONS.map(({name, component, options}, index) => (
             <Stack.Screen
               key={`${index}_${name}`}
