@@ -3,7 +3,11 @@ import {ButtonGroup} from 'react-native-elements';
 import {View, StyleSheet} from 'react-native';
 import {TicketContext, setSide} from '../../core';
 
-const FilterButtonGroup = ({style}) => {
+type Props = {
+  style?: Object;
+};
+
+const FilterButtonGroup: React.FC<Props> = ({style}) => {
   const {state, dispatch} = TicketContext();
   const {activeSide} = state;
   const buttons = ['Туда', 'Обратно'];

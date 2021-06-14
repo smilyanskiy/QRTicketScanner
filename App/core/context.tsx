@@ -1,9 +1,20 @@
 import React, {createContext, useReducer, useContext} from 'react';
 import {ticketsReducer, initialState} from './reducer';
+import {ticketState, Action} from './productTypes';
 
-export const CommonContext = createContext(initialState);
+const init = {
+  state: initialState,
+  dispatch: () => null,
+};
 
-export const TicketsProvider = ({children}) => {
+interface initType {
+  state: ticketState;
+  dispatch: React.Dispatch<Action>;
+}
+
+export const CommonContext = createContext<initType>(init);
+
+export const TicketsProvider: React.FC = ({children}) => {
   const [state, dispatch] = useReducer(ticketsReducer, initialState);
   return (
     <CommonContext.Provider value={{state, dispatch}}>

@@ -4,17 +4,32 @@ import Swiper from 'react-native-swiper';
 import {View, StyleSheet, Text} from 'react-native';
 import {Card} from 'react-native-elements';
 import {TicketContext} from '../../core';
-import {formatDate} from '../utils';
-const Details = ({route}) => {
-  const {way, index, expired, key} = route?.params;
+import {formatDate} from '../../utils';
+
+type paramsList = {
+  way: number;
+  index: number;
+  expired: boolean;
+};
+
+type Params = {
+  params: paramsList;
+};
+
+interface Details {
+  route: Params;
+}
+
+const Details = ({route}: Details) => {
+  const {params} = route;
+  const {way, index, expired} = params;
   const {state} = TicketContext();
   const {tickets} = state;
 
   return (
     <Swiper index={index} loop={false} key={tickets.length}>
       {tickets
-        .filter(({side}) => side === way)
-        .filter((item) => (expired ? item.createdAt === key : item))
+        .filter(({side, isExpired}) => side === way && expired === isExpired)
         .map((ticket) => (
           <Card
             key={`${ticket.name}_${ticket.createdAt}`}
