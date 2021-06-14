@@ -31,26 +31,21 @@ export const formatDate = (unix) => {
   return `${date} ${time}`;
 };
 
-//TODO changed not work
 export const checkIsExpired = (date) => {
   const t1 = 1000;
-  try {
-    const dateAndTime = date.split(' ');
-    const dayAndMonth = dateAndTime[0].split('.');
-    const HourAndMinutes = dateAndTime[1].split(':');
-    const month = parseInt(dayAndMonth[1], 10);
-    const today = new Date();
-    const ticket = new Date(
-      `${yearDeduction(month)}`,
-      `${month - 1}`,
-      dayAndMonth[0],
-      HourAndMinutes[0],
-      HourAndMinutes[1],
-    );
-    return today.getTime() / t1 > ticket.getTime() / t1;
-  } catch (e) {
-    return false;
-  }
+  const dateAndTime = date.split(' ');
+  const dayAndMonth = dateAndTime[0].split('.');
+  const HourAndMinutes = dateAndTime[1].split(':');
+  const month = parseInt(dayAndMonth[1], 10);
+  const today = new Date();
+  const ticket = new Date(
+    `${yearDeduction(month)}`,
+    `${month - 1}`,
+    dayAndMonth[0],
+    HourAndMinutes[0],
+    HourAndMinutes[1],
+  );
+  return today.getTime() / t1 > ticket.getTime() / t1;
 };
 
 const yearDeduction = (month) => {
